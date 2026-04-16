@@ -45,7 +45,7 @@ func SearchHandler(c *gin.Context) {
 
 // UpdateHandler handles /update end-point
 func UpdateHandler(c *gin.Context) {
-	var did, user, text string
+	var did, user, text, image_url string
 
 	// Detect content type
 	contentType := c.GetHeader("Content-Type")
@@ -53,9 +53,10 @@ func UpdateHandler(c *gin.Context) {
 	if strings.HasPrefix(contentType, "application/json") {
 		// JSON input
 		var payload struct {
-			DID  string `json:"did"`
-			User string `json:"user"`
-			Text string `json:"text"`
+			DID      string `json:"did"`
+			User     string `json:"user"`
+			Text     string `json:"text"`
+			ImageURL string `json:"image_url"`
 		}
 
 		if err := c.ShouldBindJSON(&payload); err != nil {
@@ -67,12 +68,14 @@ func UpdateHandler(c *gin.Context) {
 		did = payload.DID
 		user = payload.User
 		text = payload.Text
+		image_url = payload.ImageURL
 
 	} else {
 		// Form input (default)
 		did = c.PostForm("did")
 		user = c.PostForm("user")
 		text = c.PostForm("text")
+		image_url = c.PostForm("image_url")
 	}
 
 	// Validate input
@@ -84,10 +87,11 @@ func UpdateHandler(c *gin.Context) {
 
 	// Create record
 	rec := map[string]any{
-		"date": time.Now().UnixNano(),
-		"text": text,
-		"user": user,
-		"did":  did,
+		"date":      time.Now().UnixNano(),
+		"text":      text,
+		"user":      user,
+		"image_url": image_url,
+		"did":       did,
 	}
 
 	metaDB.InsertRecord(

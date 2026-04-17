@@ -79,8 +79,8 @@ func UpdateHandler(c *gin.Context) {
 	}
 
 	// Validate input
-	if user == "" || text == "" || did == "" {
-		log.Printf("ERROR: either user=%s, text=%s, did=%s are empty.", user, text, did)
+	if user == "" || did == "" {
+		log.Printf("ERROR: either user=%s, did=%s are empty.", user, text, did)
 		c.JSON(http.StatusBadRequest, gin.H{"error": "missing required fields"})
 		return
 	}

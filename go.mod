@@ -3,7 +3,7 @@ module github.com/CHESSComputing/ELogService
 go 1.26.2
 
 require (
-	github.com/CHESSComputing/golib v1.2.5
+	github.com/CHESSComputing/golib v1.2.6
 	github.com/gin-gonic/gin v1.12.0
 )
 
@@ -114,4 +114,3 @@ require (
 )
 
 replace github.com/CHESSComputing/golib => ../golib
-

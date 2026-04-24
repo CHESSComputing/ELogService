@@ -102,3 +102,28 @@ func UpdateHandler(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"status": "ok"})
 }
+
+type Params struct {
+	dids []string `form:"did"`
+}
+
+// RecordsHandler provids all records for dids payload
+func RecordsHandler(c *gin.Context) {
+	var records []map[string]any
+	var dids []string
+	if err := c.ShouldBindJSON(&dids); err != nil {
+		log.Printf("ERROR: no dids list is provided")
+		c.JSON(http.StatusBadRequest, gin.H{"error": "missing dids list"})
+		return
+	}
+
+	spec := map[string]any{"did": map[string]any{"$in": dids}}
+	records = metaDB.Get(
+		srvConfig.Config.ELogData.DBName,
+		srvConfig.Config.ELogData.DBColl,
+		spec, 0, -1)
+	if Verbose > 0 {
+		log.Println("RecordHandler", spec, records)
+	}
+	c.JSON(http.StatusOK, records)
+}

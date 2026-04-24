@@ -22,9 +22,10 @@ var metaDB docdb.DocDB
 // helper function to setup our router
 func setupRouter() *gin.Engine {
 	routes := []server.Route{
-		{Method: "GET", Path: "/search", Handler: SearchHandler, Authorized: false},
+		{Method: "GET", Path: "/search", Handler: SearchHandler, Authorized: false, Scope: "read"},
 		{Method: "GET", Path: "/update", Handler: UpdateHandler, Authorized: true, Scope: "write"},
 		{Method: "POST", Path: "/update", Handler: UpdateHandler, Authorized: true, Scope: "write"},
+		{Method: "POST", Path: "/records", Handler: RecordsHandler, Authorized: true, Scope: "read"},
 	}
 	r := server.Router(routes, nil, "static", srvConfig.Config.ELogData.WebServer)
 	return r
